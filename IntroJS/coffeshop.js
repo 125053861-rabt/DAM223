@@ -21,8 +21,7 @@ function listar() {
         console.log("Lista de productos");
         inventario.forEach(producto => {
             console.log(`Nombre: ${producto.nombre}, Precio: $${producto.precio}, Stock: ${producto.stock}, Categoria: ${producto.categoria}`);
-        })
-
+        });
     }
 }
 
@@ -41,7 +40,7 @@ function editar(Enombre, Estock, Ecategoria, Eprecio){
 
 // Eliminar producto
 function eliminar(nombreEnc){
-    const index = inventario.findIndex(item => item.nombre == nombreEnc)
+    const index = inventario.findIndex(item => item.nombre == nombreEnc);
 
     if (index === -1) {
         console.log("No se encontro nadota");
@@ -49,7 +48,7 @@ function eliminar(nombreEnc){
     }
 
     const eliminado = inventario.splice(index,1);
-    console.log(`Producto eliminado: ${eliminado[0].nombre}`)
+    console.log(`Producto eliminado: ${eliminado[0].nombre}`);
 }
 
 
@@ -136,17 +135,137 @@ function crearPedido(nombreProducto, cantidad){
 }
 
 
-// Agregamos productos a la cocina (Nombre, Precio, Stock, Categoria)
-agregar("Malteada", 60, 10, "Bebidas");
-agregar("Chilaquiles", 75, 5, "Platillos");
+// ---------------------------- COFFE PARTE II -----------------------------------------
+// ---------------------------- COCINA II -----------------------------------------------
+function baratito(limitePrecio = 50) {
+    const baratos = inventario.filter(p => p.precio < limitePrecio);
 
-// El cliente ve el menú
+    console.log(`\n--- PRODUCTOS BARATOTOTOTOES (Menos de $${limitePrecio}) ---`);
+    if (baratos.length === 0) {
+        console.log("No se encontraron productos tan bajos de precios");
+    } else {
+        baratos.forEach(p => {
+            console.log(`- ${p.nombre} | $${p.precio.toFixed(2)} | Cat: ${p.categoria}`);
+        });
+    }
+    return baratos;
+}
+
+function caros(limitePrecio = 100) {
+    const caros = inventario.filter(p => p.precio >= limitePrecio);
+
+    console.log(`\n--- PRODUCTOS PREMIUM ($${limitePrecio} o más) ---`);
+
+    if (caros.length === 0) {
+        console.log("No hay productos tan caros\nPERO si quieres puedes pagar esa misma cantidad por un producto mas barato (porfis)");
+    } else {
+        caros.forEach(p => {
+            console.log(`- ${p.nombre} | $${p.precio.toFixed(2)} | categoria: ${p.categoria}`);
+        });
+    }
+
+    return caros;
+}
+
+function categoria(categoriaB) {
+    const filtro = inventario.filter(p => p.categoria.toLowerCase() === categoriaB.toLowerCase());
+
+    console.log(`\n--- CATEGORÍA: ${categoriaB} ---`);
+
+    if (filtro.length === 0) {
+        console.log(`No existen productos registrados en la categoria "${categoriaB}".`);
+    } else {
+        filtro.forEach(p => {
+            console.log(`- ${p.nombre} | $${p.precio.toFixed(2)} | Stock: ${p.stock}`);
+        });
+    }
+
+    return filtro;
+}
+
+function buscarProductoUnico(nombreB) {
+    const Encontrado = inventario.find(p => p.nombre.toLowerCase() === nombreB.toLowerCase());
+
+    if (Encontrado) {
+        console.log(`Encontrado ${Encontrado.nombre} -> $${Encontrado.precio} (Stock: ${Encontrado.stock})`);
+    } else {
+        console.log(`No se encontro el producto "${nombreB}" tal vez en otra tienda`);
+    }
+    return Encontrado;
+}
+
+
+// ------------------------------------------------ CAJA II ---------------------------------------------------------------
+
+function calcularTotalConIva() {
+  const subtotalGeneral = listaPedidos.reduce(function (acumulado, pedido) {
+    return acumulado + pedido.subtotal;
+  }, 0);
+
+  const iva = subtotalGeneral * 0.16;
+  const totalFinal = subtotalGeneral + iva;
+
+  console.log("\n--- CALCULANDO IVA Y TOTAL ---");
+  console.log("Subtotal: $" + subtotalGeneral);
+  console.log("IVA: $" + iva.toFixed(2));
+  console.log("Total con IVA: $" + totalFinal.toFixed(2));
+}
+
+
+// --------------------------------------------------- CLIENTE II --------------------------------------------------------------
+// vinculamos productos a inventarios para que tengan la misma info
+let productos = inventario;
+
+function mostrarMenu() {
+  console.log("\n---------------menu del dia-----------------");
+
+  productos.forEach(function (producto) {
+    console.log(`${producto.nombre} | $${producto.precio.toFixed(2)}`);
+  });
+}
+
+function mostrarPromociones() {
+  const promociones = productos.map(function (producto) {
+    let precioConDescuento = producto.precio * 0.9;
+    return `${producto.nombre} | antes $${producto.precio.toFixed(2)} | ahora $${precioConDescuento.toFixed(2)}`;
+  });
+
+  console.log("\n---------------promociones-----------------");
+
+  promociones.forEach(function (promo) {
+    console.log(promo);
+  });
+}
+
+
+// ejecucion
+
+console.log("=== 1. AGREGANDO PRODUCTOS DE CAFÉ ===");
+agregar("Cafe Americano", 35, 20, "Bebidas");
+agregar("Capuchino", 55, 15, "Bebidas");
+agregar("Frappe Mocha", 70, 10, "Bebidas");
+agregar("Muffin de Arandanos", 40, 12, "Postres");
+agregar("Pastel de Chocolate", 65, 8, "Postres");
+
+console.log("\n=== 2. LISTAR INVENTARIO ===");
+listar();
+
+console.log("\n=== 3. VISTA DEL CLIENTE Y PROMOCIONES ===");
 mostraMenu();
+mostrarPromociones();
 
-// Se piden chilaquiles entonces se descuenta del inventario y manda el dinero a caja)
-crearPedido("Chilaquiles", 2);
+console.log("\n=== 4. CREAR PEDIDOS EN LA CAFETERÍA ===");
+crearPedido("Capuchino", 2);
+crearPedido("Muffin de Arandanos", 1);
 
-// Checamos la caja y el inventario
+console.log("\n=== 5. BÚSQUEDAS Y FILTROS (COCINA II) ===");
+baratito(45);
+caros(60);
+categoria("Bebidas");
+categoria("Postres");
+buscarProductoUnico("Frappe Mocha");
+
+console.log("\n=== 6. CAJA Y TOTALES ===");
 mostrarPedidos();
 mostrarTotal();
-listar(); // El stock de chilaquiles deberia ser 3
+calcularTotalConIva();

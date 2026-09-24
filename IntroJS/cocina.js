@@ -52,6 +52,9 @@ function eliminar(nombreEnc){
     console.log(`Producto eliminado: ${eliminado[0].nombre}`)
 }
 
+
+// --------------------------------------- PARTE 2 ( COCINA ) -------------------------------------------------------------------------
+
 function Baratito(limitePrecio = 50) {
     const baratos = inventario.filter(p => p.precio < limitePrecio);
 
@@ -72,7 +75,7 @@ function caros(limitePrecio = 100) {
     console.log(`\n--- PRODUCTOS PREMIUM ($${limitePrecio} o más) ---`);
 
     if (caros.length === 0) {
-        console.log("No hay productos tan caros\nPERO si quieres puedes pagar esa misma cantidad por un producto mas barato (andale)");
+        console.log("No hay productos tan caros\nPERO si quieres puedes pagar esa misma cantidad por un producto mas barato (porfis)");
     } else {
         caros.forEach(p => {
             console.log(`- ${p.nombre} | $${p.precio.toFixed(2)} | categoria: ${p.categoria}`);
@@ -80,4 +83,31 @@ function caros(limitePrecio = 100) {
     }
 
     return caros;
+}
+
+function categoria(categoriaB) {
+    const filtro = inventario.filter(p => p.categoria.toLowerCase() === categoriaB.toLowerCase());
+
+    console.log(`\n--- CATEGORÍA: ${categoriaB()} ---`);
+
+    if (filtro.length === 0) {
+        console.log(`No existen productos registrados en la categoria "${categoriaB}".`);
+    } else {
+        filtro.forEach(p => {
+            console.log(`- ${p.nombre} | $${p.precio.toFixed(2)} | Stock: ${p.stock}`);
+        });
+    }
+
+    return filtro;
+}
+
+function buscarProductoUnico(nombreB) {
+    const Encontrado = inventario.find(p => p.nombre.toLowerCase() === nombreB.toLowerCase());
+
+    if (Encontrado) {
+        console.log(`Encontrado ${Encontrado.nombre} -> $${Encontrado.precio} (Stock: ${Encontrado.stock})`);
+    } else {
+        console.log(`No se encontro el producto "${nombreB}" tal vez en otra tienda`);
+    }
+    return Encontrado;
 }
