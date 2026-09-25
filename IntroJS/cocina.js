@@ -111,3 +111,54 @@ function buscarProductoUnico(nombreB) {
     }
     return Encontrado;
 }
+
+// ------------------------------------ COCINA III -----------------------------------
+function prepararCafe(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nIniciando tu pedido de: ${nombreBuscado}...`);
+
+        const producto = inventario.find(p => p.nombre.toLowerCase() === nombreBuscado.toLowerCase());
+
+        if (!producto) {
+            reject(`El producto "${nombreBuscado}" no existe`);
+            return;
+        }
+
+        if (producto.stock <= 0) {
+            reject(`No hay stock disponible para preparar ${producto.nombre}`);
+            return;
+        }
+
+        // Tiempo de espera simulado (2 segundos)
+        setTimeout(() => {
+            producto.stock -= 1;
+            resolve(`Yupiii tu ${producto.nombre} esta listo provecho :D! (Stock restante: ${producto.stock})`);
+        }, 2000);
+    });
+}
+
+function error(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nIntentando encender la cafetera para: ${nombreBuscado}...`);
+
+        setTimeout(() => {
+            reject("No se pudo hacer el pedido la cafetera hizo KABOOOOM y valio");
+        }, 1500);
+    });
+}
+
+function faltanIngredientes(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nRevisando si aun quedan ingredientes para ${nombreBuscado}...`);
+
+        const producto = inventario.find(p => p.nombre.toLowerCase() === nombreBuscado.toLowerCase());
+
+        setTimeout(() => {
+            if (!producto || producto.stock <= 0) {
+                reject(`Faltan ingredientes no se pudo preparar"${nombreBuscado}"`);
+            } else {
+                resolve(`si hay ingredientes haremos tu ${producto.nombre} proximamente`);
+            }
+        }, 1000);
+    });
+}

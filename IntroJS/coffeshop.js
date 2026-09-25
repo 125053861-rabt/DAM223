@@ -237,13 +237,128 @@ function mostrarPromociones() {
   });
 }
 
+// ------------------------------------ COCINA III -----------------------------------
+function prepararCafe(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nIniciando tu pedido de: ${nombreBuscado}...`);
+
+        const producto = inventario.find(p => p.nombre.toLowerCase() === nombreBuscado.toLowerCase());
+
+        if (!producto) {
+            reject(`El producto "${nombreBuscado}" no existe`);
+            return;
+        }
+
+        if (producto.stock <= 0) {
+            reject(`No hay stock disponible para preparar ${producto.nombre}`);
+            return;
+        }
+
+        // Tiempo de espera simulado (2 segundos)
+        setTimeout(() => {
+            producto.stock -= 1;
+            resolve(`Yupiii tu ${producto.nombre} esta listo provecho :D! (Stock restante: ${producto.stock})`);
+        }, 2000);
+    });
+}
+
+function error(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nIntentando encender la cafetera para: ${nombreBuscado}...`);
+
+        setTimeout(() => {
+            reject("No se pudo hacer el pedido la cafetera hizo KABOOOOM y valio");
+        }, 1500);
+    });
+}
+
+function faltanIngredientes(nombreBuscado) {
+    return new Promise((resolve, reject) => {
+        console.log(`\nRevisando si aun quedan ingredientes para ${nombreBuscado}...`);
+
+        const producto = inventario.find(p => p.nombre.toLowerCase() === nombreBuscado.toLowerCase());
+
+        setTimeout(() => {
+            if (!producto || producto.stock <= 0) {
+                reject(`Faltan ingredientes no se pudo preparar"${nombreBuscado}"`);
+            } else {
+                resolve(`si hay ingredientes haremos tu ${producto.nombre} proximamente`);
+            }
+        }, 1000);
+    });
+}
+
+// -------------------------------------------------- CAJA III ----------------------------------------------------------------------
+
+function marcarPedidoListo(index, avisar) {
+  let pedido = listaPedidos[index];
+
+  if (!pedido) {
+    console.log("No existe ese pedido");
+    return;
+  }
+
+  avisar("Tu pedido de " + pedido.nombre + " ya esta listo");
+}
+
+function cancelarPedido(index, avisar) {
+  let pedido = listaPedidos[index];
+
+  if (!pedido) {
+    console.log("No existe ese pedido");
+    return;
+  }
+
+  totalAcumulado = totalAcumulado - pedido.subtotal;
+  listaPedidos.splice(index, 1);
+
+  avisar("Se cancelo el pedido de " + pedido.nombre);
+}
+
+marcarPedidoListo(0, function (mensaje) {
+  console.log(mensaje);
+});
+
+cancelarPedido(1, function (mensaje) {
+  console.log(mensaje);
+});
+
+// ------------------------------------------------ CLIENTE III ---------------------------------------------------------------
+function seguimientoPedido() {
+  console.log("Pedido recibido");
+
+  setTimeout(function () {
+    console.log("Preparando.........");
+  }, 2000); // Espera 2 segundos
+
+  setTimeout(function () {
+    console.log("Empacando.........");
+  }, 4000); // Espera 4 segundos
+
+  setTimeout(function () {
+    console.log("Pedido Entregado");
+  }, 6000); // Espera 6 segundos
+}
+
+// Función en caso de que el pedido sea cancelado
+function seguimientoPedidoCancelado() {
+  console.log("Pedido recibido");
+
+  setTimeout(function () {
+    console.log("Preparando.........");
+  }, 2000);
+
+  setTimeout(function () {
+    console.log("Cancelado");
+  }, 4000);
+}
 
 // ejecucion
 
 console.log("=== 1. AGREGANDO PRODUCTOS DE CAFÉ ===");
 agregar("Cafe Americano", 35, 20, "Bebidas");
 agregar("Capuchino", 55, 15, "Bebidas");
-agregar("Frappe Mocha", 70, 10, "Bebidas");
+agregar("Frappe Mocha", 70, 0, "Bebidas"); // Stock 0 para probar cuando faltan ingredientes
 agregar("Muffin de Arandanos", 40, 12, "Postres");
 agregar("Pastel de Chocolate", 65, 8, "Postres");
 
@@ -269,3 +384,27 @@ console.log("\n=== 6. CAJA Y TOTALES ===");
 mostrarPedidos();
 mostrarTotal();
 calcularTotalConIva();
+
+console.log("\n=== 7. CAJA III (CALLBACKS) ===");
+marcarPedidoListo(0, function (mensaje) {
+    console.log(mensaje);
+});
+
+cancelarPedido(1, function (mensaje) {
+    console.log(mensaje);
+});
+
+console.log("\n=== 8. COCINA III (PROMESAS) Y CLIENTE III (ASINCRONIA) ===");
+prepararCafe("Cafe Americano")
+    .then(mensajeExito => {
+        console.log(mensajeExito);
+        return faltanIngredientes("Frappe Mocha");
+    })
+    .catch(errorIngredientes => {
+        console.log(errorIngredientes);
+        return error("Cafe Americano");
+    })
+    .catch(errorCafetera => {
+        console.log(errorCafetera);
+        seguimientoPedido();
+    });
