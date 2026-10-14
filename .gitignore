@@ -111,8 +111,6 @@ coverage/
 
 *.tsbuildinfo
 miApp/LICENSE
-miApp/App.js
-miApp/app.json
 miApp/assets/android-icon-background.png
 miApp/assets/android-icon-foreground.png
 miApp/assets/android-icon-monochrome.png
