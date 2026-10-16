@@ -14,11 +14,19 @@ export default function App() {
       <StatusBar style="auto" />
       <Saludo></Saludo>
       <Saludo2></Saludo2>
-      <Perfil></Perfil>
+      <Perfil
+      nombre = "Nombre: Rene Alberto Breton Tellez"
+      carrera = "Carrera: TIID"
+      materia= "Materia: Desarrollo movil"
+      cuatri= "Cuatrimestre: Cuarto"></Perfil>
+
+      <Perfil
+      nombre = "Nombre: Breton Tellez Rene Alberto"
+      carrera = "Carrera: DIIT"
+      materia= "Materia: Movil Desarrollador"
+      cuatri= "Cuatrimestre: 2*2"></Perfil>
     </View>
-
-
-
+    
   );
 }
 
