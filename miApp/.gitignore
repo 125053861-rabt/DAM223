@@ -39,3 +39,12 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+*.tsbuildinfo
+miApp/LICENSE
+miApp/assets/android-icon-background.png
+miApp/assets/android-icon-foreground.png
+miApp/assets/android-icon-monochrome.png
+miApp/assets/favicon.png
+miApp/assets/icon.png
+miApp/assets/splash-icon.png
