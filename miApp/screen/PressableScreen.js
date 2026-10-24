@@ -1,5 +1,5 @@
 /* Zona importaciones */
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Text} from 'react-native';
 
 /* main */
 export default function PressableScreen() {
