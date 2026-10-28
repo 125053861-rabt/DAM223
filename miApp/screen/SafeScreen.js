@@ -1,23 +1,35 @@
-/* Zona importaciones */
-import { StyleSheet, View, Text} from 'react-native';
+/* 1.ZONA DE IMPORTACIONES */
+import { StyleSheet, View , Text, ScrollView} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SafeView from './prac10/SafeView';
+import ScrollEj from './prac10/ScrollEj';
 
-/* main */
+/* 2.ZONA DEL MAIN(COMPONENTES, SCREENS) / EJECUCION*/
 export default function SafeScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Aqui va la practica 10</Text>
-    </View>
-    
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+
+      <Text style={styles.tituloPrincipal}>
+        Aqui va la practica 10 - equipo de dulce
+      </Text>
+      <SafeView />
+      <ScrollEj/>
+      </SafeAreaView>
   );
 }
-
-/* estilos */
+/* 3.ZONA DE LA ESTETICA */
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection:'column',
+ container: {
+  flex: 1,
+  backgroundColor: '#ffffff',
+  padding:15,
+},
+  tituloPrincipal: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 15,
   },
+   
+
 });
