@@ -1,0 +1,43 @@
+import {Tabs} from "expo-router";
+import {Ionicons, FontAwesome} from  '@expo/vector-icons';
+
+export default function TabsLayout(){
+
+    return(
+
+  <Tabs>
+     <Tabs.Screen
+
+     name="index"
+     options={{title:"Inicio", href:null}}
+     
+     />
+
+     <Tabs.Screen
+
+     name="alta"
+     options={{
+      title:"Formulario",
+      tabBarIcon: ({color, size})=>( <Ionicons name="person-add" size={15} color="blue"/>),
+    }}
+     
+     />
+
+     <Tabs.Screen
+
+     name="consulta"
+     options={{
+      title:"Listado",
+      tabBarIcon:({color, size})=> (<FontAwesome name="list" size={15} color="blue"/>),
+
+    }}
+     
+     />
+
+
+
+  </Tabs>  
+
+  )
+
+}
